@@ -38,7 +38,6 @@ wait = WebDriverWait(driver, 10)  # Wait for up to 10 seconds
 wait.until(EC.visibility_of_element_located((By.CLASS_NAME, "box.item.product.rotation.size11")))
 
 # Parse the HTML content of the page using Beautiful Soup
-soup = BeautifulSoup(driver.page_source, "html.parser")
 #print(soup)
 
 product_counter = 0
@@ -46,6 +45,7 @@ product_links = set()
 
 # Loop through the product divs and extract the desired information
 while True:
+    soup = BeautifulSoup(driver.page_source, "html.parser")
     # Find all the product divs on the page
     product_divs = soup.find_all("div", {"class": "box item product rotation size11"})
     # If there is no more content to load, break out of the loop
@@ -110,16 +110,11 @@ while True:
             # If the product does not exist, insert the new document into the collection
             collection.insert_one(document)
 
-
-
+    # Wait for the new content to load
+    wait.until(EC.presence_of_element_located((By.XPATH, "//div[@class='box item product rotation size11'][last()]")))
 
     # Scroll down to the bottom of the page
     driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-
-    # Wait for the new content to load
-    wait.until(EC.presence_of_element_located((By.CLASS_NAME, "box.item.product.rotation.size11")))
-
-
 
 # Close the web driver
 driver.quit()
@@ -128,3 +123,4 @@ end_time = time.time()
 elapsed_time = end_time - start_time
 
 print(f"Retrieved and inserted {product_counter} products in {elapsed_time:.2f} seconds.")
+
