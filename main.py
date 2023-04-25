@@ -8,7 +8,7 @@ from pymongo.server_api import ServerApi
 import datetime
 import time
 
-uri = "mongodb+srv://gregor:L0K0M0TIVA@mercatordb.ubbzi9v.mongodb.net/?retryWrites=true&w=majority"
+uri = "" #mongodb uri
 
 # Create a new client and connect to the server
 client = MongoClient(uri, server_api=ServerApi('1'))
